@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test-of-Software-Engineer-Fronted</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            width: 200px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2></h2>
+        <input type="text" id="alienInput" placeholder="Enter Alien numeral">
+        <br>
+        <button onclick="convertAlien()">Convert</button>
+        <div class="result" id="result"></div>
+        <div class="explanation" id="explanation"></div>
+    </div>
+
+    <script>
+        function convertAlien() {
+            const s = document.getElementById("alienInput").value.toUpperCase().trim();
+            const map = { A: 1, B: 5, Z: 10, L: 50, C: 100, D: 500, R: 1000 };
+            let total = 0;
+            let explanation = [];
+            let i = 0;
+
+            while (i < s.length) {
+                const current = map[s[i]];
+                const next = map[s[i + 1]];
+
+                if (!current) {
+                    document.getElementById("result").innerText = `Invalid symbol: ${s[i]}`;
+                    document.getElementById("explanation").innerText = '';
+                    return;
+                }
+
+                if (next && current < next) {
+                    total += next - current;
+                    explanation.push(`${s[i]}${s[i + 1]} = ${next - current}`);
+                    i += 2;
+                } else {
+                    let count = 1;
+                    while (i + count < s.length && s[i + count] === s[i]) count++;
+                    total += current * count;
+                    explanation.push(count > 1 ? `${s[i].repeat(count)} = ${current * count}` : `${s[i]} = ${current}`);
+                    i += count;
+                }
+            }
+
+            document.getElementById("result").innerText = `Output: ${total}`;
+            document.getElementById("explanation").innerText = `Explanation: ${explanation.join(', ')}`;
+        }
+    </script>
+</body>
+
+</html>
